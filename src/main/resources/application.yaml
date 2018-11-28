@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: dmap-mbta-portal-app
+  profiles:
+    active: dev

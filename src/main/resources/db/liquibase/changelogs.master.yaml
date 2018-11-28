@@ -1,0 +1,306 @@
+databaseChangeLog:
+- changeSet:
+    author: jnacios
+    id: 1
+    comment: Create the Agency table
+    changes:
+    - createTable:
+        tableName: agency
+        columns:
+        - column:
+            name: agency_id
+            type: bigserial
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+              unique: true
+        - column:
+            name: name
+            type: text
+        - column:
+            name: parent_agency_id
+            type: bigserial
+        - column:
+            name: state
+            type: text
+        - column:
+            name: country
+            type: text
+        - column:
+            name: pbi_base_url
+            type: text
+        - column:
+            name: pbi_authority_url
+            type: text
+        - column:
+            name: pbi_resource_uri
+            type: text
+        - column:
+            name: pbi_client_id
+            type: text
+        - column:
+            name: pbi_username
+            type: text
+        - column:
+            name: pbi_password
+            type: text
+- changeSet:
+    author: jnacios
+    id: 2
+    comment: Create Role Table
+    changes:
+    - createTable:
+        tableName: role
+        columns:
+        - column:
+            name: role_id
+            type: bigserial
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+              unique: true
+        - column:
+            name: role_name
+            type: text
+- changeSet:
+    author: jnacios
+    id: 3
+    comment: Create User Table
+    changes:
+    - createTable:
+        tableName: user
+        columns:
+        - column:
+            name: user_id
+            type: bigserial
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+              unique: true
+        - column:
+            name: first_name
+            type: text
+        - column:
+            name: last_name
+            type: text
+        - column:
+            name: email_address
+            type: text
+        - column:
+            name: external_id
+            type: text
+- changeSet:
+    author: jnacios
+    id: 4
+    comment: Create Info Product Table
+    changes:
+    - createTable:
+        tableName: info_product
+        columns:
+        - column:
+            name: info_product_id
+            type: bigserial
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+              unique: true
+        - column:
+            name: name
+            type: text
+- changeSet:
+    author: jnacios
+    id: 5
+    comment: Create User Role Agency Table
+    changes:
+    - createTable:
+        tableName: user_role_agency
+        columns:
+        - column:
+            name: user_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_user_role_agency_user
+              references: user(user_id)
+        - column:
+            name: role_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_user_role_agency_role
+              references: role(role_id)
+        - column:
+            name: agency_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_user_role_agency_agency
+              references: agency(agency_id)
+- changeSet:
+    author: jnacios
+    id: 6
+    comment: Create IP Role Agency Table
+    changes:
+    - createTable:
+        tableName: ip_role_agency
+        columns:
+        - column:
+            name: info_product_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_ip_role_agency_info_product
+              references: info_product(info_product_id)
+        - column:
+            name: role_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_ip_role_agency_role
+              references: role(role_id)
+        - column:
+            name: agency_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_ip_role_agency_agency
+              references: agency(agency_id)
+- changeSet:
+    author: jnacios
+    id: 7
+    comment: Create Agency Info product Table
+    changes:
+    - createTable:
+        tableName: agency_info_product
+        columns:
+        - column:
+            name: info_product_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_agency_info_product_info_product
+              references: info_product(info_product_id)
+        - column:
+            name: agency_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_agency_info_product_agency
+              references: agency(agency_id)
+        - column:
+            name: default_pbi_workspace_name
+            type: text
+- changeSet:
+    author: jnacios
+    id: 8
+    comment: Create Data Model Table
+    changes:
+    - createTable:
+        tableName: data_model
+        columns:
+        - column:
+            name: data_model_id
+            type: bigserial
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+              unique: true
+        - column:
+            name: name
+            type: text
+        - column:
+            name: description
+            type: text
+- changeSet:
+    author: jnacios
+    id: 9
+    comment: Create Info Product Data Model Table
+    changes:
+    - createTable:
+        tableName: info_product_data_model
+        columns:
+        - column:
+            name: info_product_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_info_product_data_model_info_product
+              references: info_product(info_product_id)
+        - column:
+            name: data_model_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_info_product_data_model_data_model
+              references: data_model(data_model_id)
+- changeSet:
+    author: jnacios
+    id: 10
+    comment: Create Data Dictionary table
+    changes:
+    - createTable:
+        tableName: data_dictionary
+        columns:
+        - column:
+            name: data_dictionary_id
+            type: bigserial
+            constraints:
+              primaryKey: true
+              nullable: false
+              unique: true
+        - column:
+            name: table_name
+            type: text
+        - column:
+            name: field_name
+            type: text
+        - column:
+            name: description
+            type: text
+        - column:
+            name: data_type
+            type: text
+        - column:
+            name: data_model_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_data_dictionary_data_model
+              references: data_model(data_model_id)
+- changeSet:
+    author: jnacios
+    id: 11
+    comment: Create the Document table
+    changes:
+    - createTable:
+        tableName: document
+        columns:
+        - column:
+            name: document_id
+            type: bigserial
+            autoIncrement: true
+            constraints:
+              primaryKey: true
+              nullable: false
+              unique: true
+        - column:
+            name: name
+            type: text
+        - column:
+            name: description
+            type: text
+        - column:
+            name: url
+            type: text
+        - column:
+            name: info_product_id
+            type: bigserial
+            constraints:
+              nullable: false
+              foreignKeyName: fk_document_info_product
+              references: info_product(info_product_id)
